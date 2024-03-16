@@ -1,0 +1,4 @@
+name: minecraftDiscordJoinBot
+version: '2.0-SNAPSHOT'
+main: me.peppastone.minecraftdiscordjoinbot.MinecraftDiscordJoinBot
+api-version: '1.20'

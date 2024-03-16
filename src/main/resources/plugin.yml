@@ -1,0 +1,4 @@
+name: minecraftDiscordJoinBot
+version: '${project.version}'
+main: me.peppastone.minecraftdiscordjoinbot.MinecraftDiscordJoinBot
+api-version: '1.20'
