@@ -11,12 +11,13 @@ public final class MinecraftDiscordJoinBot extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getServer().getPluginManager().registerEvents(new JoinLeaveListener(), this);
-        JDA bot = JDABuilder.createDefault("MTA1NjY5NjU3NjI0NjAyNjM1MA.GAQHrj.Tf0DBoWRXWJru6muao26hI2JyixPes35l33xzE")
+        saveDefaultConfig();
+        getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
+        JDA bot = JDABuilder.createDefault(getConfig().getString("token"))
                 .setActivity(Activity.listening("your mom"))
-                .addEventListeners(new BotListeners())
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
+        bot.addEventListener(new BotListeners(bot, this));
     }
 
     @Override

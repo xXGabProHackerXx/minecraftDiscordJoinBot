@@ -14,19 +14,27 @@ import java.util.List;
 
 public class JoinLeaveListener implements Listener {
 
+    private MinecraftDiscordJoinBot plugin;
+
+    public JoinLeaveListener(MinecraftDiscordJoinBot plugin){
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         List<Player> players = (List<Player>) Bukkit.getOnlinePlayers();
-        String online = "";
-        for(Player player : players){
-            online += player.getName() + " ";
-        }
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(new Color(0, 255, 0));
-        eb.setAuthor("dot bot", "https://cravatar.eu/helmhead/" + e.getPlayer().getName() + "/600.png");
+        eb.setAuthor(plugin.getConfig().getString("server-name"), plugin.getConfig().getString("server-icon"));
         eb.setThumbnail("https://mc-heads.net/body/" + e.getPlayer().getUniqueId() + "/128.png");
-        eb.addField("Player join", e.getPlayer().getName() + " has joined the SMP", false);
-        eb.addField("Players online", online, false);
+        eb.addField(plugin.getConfig().getString("join-title"), plugin.getConfig().getString("join-description").replace("%player%", e.getPlayer().getName()), false);
+        if(plugin.getConfig().getBoolean("player-count")){
+            String online = "";
+            for(Player player : players){
+                online += player.getName() + " ";
+            }
+            eb.addField(players.size() + " Players Online", online, false);
+        }
         MessageEmbed embed = eb.build();
         BotListeners.channel.sendMessageEmbeds(embed).queue();
     }
@@ -34,21 +42,23 @@ public class JoinLeaveListener implements Listener {
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e){
         List<Player> players = (List<Player>) Bukkit.getOnlinePlayers();
-        String online = "";
-        for(Player player : players){
-            if(!player.getName().equals(e.getPlayer().getName())){
-                online += player.getName() + " ";
-            }
-        }
-        if(online.equals("")){
-            online = "noone lol";
-        }
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(new Color(255, 0, 0));
-        eb.setAuthor("dot bot", "https://cravatar.eu/helmhead/" + e.getPlayer().getName() + "/600.png");
+        eb.setAuthor(plugin.getConfig().getString("server-name"), plugin.getConfig().getString("server-icon"));
         eb.setThumbnail("https://mc-heads.net/body/" + e.getPlayer().getUniqueId() + "/128.png");
-        eb.addField("Player leave", e.getPlayer().getName() + " has left the SMP", false);
-        eb.addField("Players online", online, false);
+        eb.addField(plugin.getConfig().getString("leave-title"), plugin.getConfig().getString("leave-description").replace("%player%", e.getPlayer().getName()), false);
+        if(plugin.getConfig().getBoolean("player-count")){
+            String online = "";
+            for(Player player : players){
+                if(!player.getName().equals(e.getPlayer().getName())){
+                    online += player.getName() + " ";
+                }
+            }
+            if(online.equals("")){
+                online = "Empty";
+            }
+            eb.addField((players.size() - 1) + " Players Online", online, false);
+        }
         MessageEmbed embed = eb.build();
         BotListeners.channel.sendMessageEmbeds(embed).queue();
     }

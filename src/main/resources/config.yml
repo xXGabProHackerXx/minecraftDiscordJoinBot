@@ -1,0 +1,9 @@
+token: 'discord bot token'
+channel-id: 'discord channel where the messages will be sent'
+join-title: 'Player Join'
+join-description: '%player% has joined the server!'
+leave-title: 'Player Leave'
+leave-description: '%player% has left the server'
+player-count: true
+server-name: 'My Epic Server'
+server-icon: 'https://i.ibb.co/GF94pqm/server-icon.png'
